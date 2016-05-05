@@ -1,5 +1,5 @@
 ## Description
-The example Android app for the Cogs real-time message brokering system.
+Drop the Mic!  If you phone hits something with enough force, you'll notify everyone that you've dropped the mic!
 
 ## Requirements
 * Android 4.0.4+
@@ -8,7 +8,6 @@ The example Android app for the Cogs real-time message brokering system.
 
 ## Installation
 ### Manual
-* You will need to build the [cogs-android-client-sdk](https://github.com/cogswell-io/cogs-android-client-sdk) first, and install it into your local maven cache.
 * Follow the Android Studio installation instructions appropriate for your platform. http://developer.android.com/sdk/index.html (If you are on Ubuntu 15.04 or later, the only dependencies you need are lib32stdc++6 and lib32z1. Attempting to install some of the others will result in errors)
 * You will need SDK version 22. To get this version, open Android Studio > Preferences > Appearance and Behavior > System Settings > Android SDK > SDK Platforms > Check-mark Android 5.1.1, API level 22 > Ok.  The SDK will be installed.
 * Once you have Android Studio installed, you will need to create a local.properties file that points to your SDK root.
