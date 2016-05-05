@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Cogs Demo Test</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="attributes">{\n"customer_id":777,\n"email":"email@domain.com"\n}</string>
+    <string name="splash_text">COGs Test App\n1.0.12\nwww.cogswell.io</string>
+    <string name="about_text">COGs Test App\n1.0.12\nwww.cogswell.io\n\nby Aviata\nwww.aviatainc.com</string>
+    <string-array name="debug_strings">
+        <item>Echo as message</item>
+        <item>Mirror as message</item>
+    </string-array>
+</resources>

@@ -1,0 +1,66 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.0.0'
+  }
+}
+
+apply plugin: 'com.android.application'
+
+android {
+  lintOptions {
+    abortOnError false
+  }
+}
+
+android {
+  compileSdkVersion 22
+  buildToolsVersion "23.0.3"
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+
+  dexOptions {
+    javaMaxHeapSize "4g"
+  }
+
+  buildTypes {
+    debug {
+      debuggable true
+    }
+  }
+
+  defaultConfig {
+    applicationId "io.cogswell.example"
+    minSdkVersion 15
+    targetSdkVersion 22
+    versionCode 11
+    versionName "11.0"
+    multiDexEnabled true
+  }
+}
+
+repositories {
+  jcenter()
+  mavenLocal()
+}
+
+dependencies {
+  compile 'com.android.support:multidex:1.0.1'
+  compile 'com.android.support:appcompat-v7:22.0.0'
+  compile 'com.android.support:design:22.2.1'
+  compile 'io.cogswell:cogs-android-client-sdk:1.0.14'
+}
+
+group = 'io.cogswell'
+version = '1.0.12'
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.12'
+}
+
