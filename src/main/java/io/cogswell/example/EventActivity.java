@@ -93,8 +93,9 @@ public class EventActivity extends AppCompatActivity  {
     double magLowPass=0;
     double magAveNoise=0;
     double magAlpha = 0.01;
-    long timestampDebounce =0;
-    long timestampDebounceTimeNs = 100000000;
+    static long timestampDebounce =0;
+    long timestampDebounceTimeNs = 1000000000;
+    //long timestampDebounceTimeNs = 100000000;
 
     private String UDID;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -431,35 +432,44 @@ public class EventActivity extends AppCompatActivity  {
         mAccelerometer  = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         //SensorEvent.values[0]
-        mSensorEventListener = new SensorEventListener() {
+        if (mSensorEventListener==null) {
+            mSensorEventListener = new SensorEventListener() {
 
-            @Override
-            public void onSensorChanged(SensorEvent sensorEvent) {
+                @Override
+                public void onSensorChanged(SensorEvent sensorEvent) {
 
-                double mag = Math.sqrt(
-                        sensorEvent.values[0]*sensorEvent.values[0]+
-                                sensorEvent.values[1]*sensorEvent.values[1]+
-                                sensorEvent.values[2]*sensorEvent.values[2]);
-                // TODO: Consider: sensorEvent.timestamp Weight the low pass filter by time?
-                double magRelative = mag-magLowPass;
-                magLowPass = magLowPass + magAlpha*magRelative;
-                magAveNoise = magAveNoise+magAlpha*(Math.abs(magRelative)-magAveNoise);
-                double magThreshold = magAveNoise*4+5;
-                long timestamp = sensorEvent.timestamp;
+                    double mag = Math.sqrt(
+                            sensorEvent.values[0] * sensorEvent.values[0] +
+                                    sensorEvent.values[1] * sensorEvent.values[1] +
+                                    sensorEvent.values[2] * sensorEvent.values[2]);
+                    // TODO: Consider: sensorEvent.timestamp Weight the low pass filter by time?
+                    double magRelative = mag - magLowPass;
+                    magLowPass = magLowPass + magAlpha * magRelative;
+                    magAveNoise = magAveNoise + magAlpha * (Math.abs(magRelative) - magAveNoise);
+                    double magThreshold = magAveNoise * 4 + 5;
+                    //long timestamp = sensorEvent.timestamp;
+                    long timestamp = System.currentTimeMillis();
 
-                if (magRelative>magThreshold && timestamp>timestampDebounce) {
-                    timestampDebounce = timestamp + timestampDebounceTimeNs;
-                    int magRelativeInt = (int) magRelative;
-                    attributesJSONAsString = "{\"name\":\""+EventActivity.this.android_id+"\",\"delta_a\":"+magRelativeInt+"}";
-                    Log.d("Accelerometer","Hit "+magRelative+" Event: "+attributesJSONAsString);
-                    new event().execute("");
+                    synchronized (EventActivity.class) {
+                        if (magRelative > magThreshold && timestamp > timestampDebounce) {
+                            long timestampDebounceTimeMs = 600;
+                            timestampDebounce = timestamp + timestampDebounceTimeMs;
+                            //timestampDebounce = timestamp + timestampDebounceTimeNs;
+                            int magRelativeInt = (int) magRelative;
+                            attributesJSONAsString = "{\"name\":\"" + EventActivity.this.android_id + "\",\"delta_a\":" + magRelativeInt + "}";
+                            Log.d("Accelerometer", "Time:" + timestamp + " Hit:" + magRelative + " Event: " + attributesJSONAsString);
+                            new event().execute("");
+                        }
+                    }
+               }
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int i) {
                 }
-            }
+            };
 
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {}
-        };
-        mSensorManager.registerListener(mSensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+            mSensorManager.registerListener(mSensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        }
 /*
 http://developer.android.com/guide/topics/sensors/sensors_overview.html
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cogs Demo Test</string>
+    <string name="app_name">Cogswell.io Drop the Mic</string>
     <string name="action_settings">Settings</string>
 
     <string name="attributes">{\n"customer_id":777,\n"email":"email@domain.com"\n}</string>
