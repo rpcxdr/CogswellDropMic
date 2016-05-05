@@ -1,5 +1,5 @@
 ## Description
-Drop the Mic!  If you phone hits something with enough force, you'll notify everyone that you've dropped the mic!
+Drop the Mic!  If your phone hits something with enough force, you'll notify everyone that you've dropped the mic!
 
 ## Requirements
 * Android 4.0.4+
