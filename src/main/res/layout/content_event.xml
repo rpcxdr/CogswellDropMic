@@ -43,7 +43,7 @@
             android:layout_centerHorizontal="true" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
@@ -53,8 +53,10 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/inputEditTextEventName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <EditText
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true">
+
+        <EditText
                 android:id="@+id/editTextEventName"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -65,10 +67,11 @@
             android:layout_height="wrap_content"
             android:text="Save"
             android:id="@+id/buttonSaveEventName"
-            android:gravity="right"/>
-    </LinearLayout>
+            android:gravity="right"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="3"
@@ -86,6 +89,6 @@
                     android:text="Unsubscribe"
                     android:id="@+id/buttonUnregisterPush"
                     android:layout_alignParentRight="true"/>
-        </LinearLayout>
+        </RelativeLayout>
 
 </LinearLayout>
