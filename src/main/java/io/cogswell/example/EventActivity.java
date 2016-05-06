@@ -162,7 +162,7 @@ public class EventActivity extends AppCompatActivity  {
                                     @Override
                                     public void run() {
                                         int soundIndex = new Random().nextInt(sounds.length);
-                                        if (sounds[soundIndex].isPlaying()) {
+                                        if (!sounds[soundIndex].isPlaying()) {
                                             sounds[soundIndex].start();
                                         }
                                     }
