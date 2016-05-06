@@ -12,6 +12,9 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 import io.cogswell.example.EventActivity;
 import io.cogswell.example.PushActivity;
 import io.cogswell.example.R;
@@ -77,9 +80,20 @@ Log.d("GcmService", "onMessageReceived");
 
         Uri defaultSoundUri = RingtoneManager
                 .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+/*
+        int soundIndex = new Random().nextInt(3);
+        if (soundIndex==1) {
+            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.homer_beginning);
+        } else if (soundIndex==2) {
+            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.homer_oopsy);
+        } else if (soundIndex==0) {
+            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.homer_outta_here);
+        } else  {
+            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.homer_woohoo);
+        }*/
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
                 this).setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("Cogs App").setContentText(msg)
+                .setContentTitle("Someone Dropped The Mic").setContentText("Cogswell.io")
                 .setAutoCancel(true).setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 

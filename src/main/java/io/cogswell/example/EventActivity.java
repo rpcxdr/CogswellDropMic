@@ -12,6 +12,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,11 +23,13 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -52,6 +56,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -63,7 +68,6 @@ import io.cogswell.example.table.GambitAttribute;
 public class EventActivity extends AppCompatActivity  {
     private String accessKey;
     private String namespaceName;
-    private String eventName;
     private String attributesJSONAsString;
     private String platform;
     private String enviornment;
@@ -72,7 +76,7 @@ public class EventActivity extends AppCompatActivity  {
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private String debug_directive = "";
     private String message = "";
-    private EditText editTextEventName;
+    public EditText editTextEventName;
     private String clientSalt = null;
     private String clientSecret = null;
 
@@ -83,9 +87,11 @@ public class EventActivity extends AppCompatActivity  {
     private String eventBody = null;
     private String receivedMessage = null;
     private boolean pushServiceStarted = false;
+    MediaPlayer sounds[];
 
     private Button buttonRegisterPush;
     private Button buttonUnregisterPush;
+    private Button buttonSaveEventName;
 
     private Sensor mAccelerometer ;
     private SensorManager mSensorManager;
@@ -140,19 +146,27 @@ public class EventActivity extends AppCompatActivity  {
                         public void run() {
                             if (!responseMessage.equals("") && responseMessage != null && !responseMessage.isEmpty()) {
                                 String prettyResponseMessage = responseMessage;
-                                String eventName = "Someone";
+                                String eventNameIncoming = "Someone";
                                 try {
                                     // Attempt to pretty-print the JSON.
                                     JSONObject responseJSON = new JSONObject(responseMessage);
                                     String message = responseJSON.getString("message");
                                     JSONObject responseMessageJSON = new JSONObject(message);
-                                    eventName = responseMessageJSON.getString("event_name");
+                                    eventNameIncoming = responseMessageJSON.getString("event_name");
                                     prettyResponseMessage = Utils.unescapeJavaString(responseMessageJSON.toString(2));
                                 } catch (JSONException je) {
                                     Log.w("response message", "Invalid JSON: "+responseMessage, je);
                                     // If we can't parse the json, default to just showing the response text.
                                 }
-                                Utils.alert(activity, eventName+" dropped the mic!", "", null);
+                                Utils.alert(activity, eventNameIncoming + " dropped the mic!", "", new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        int soundIndex = new Random().nextInt(sounds.length);
+                                        if (sounds[soundIndex].isPlaying()) {
+                                            sounds[soundIndex].start();
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
@@ -162,7 +176,9 @@ public class EventActivity extends AppCompatActivity  {
                 } catch (Exception ex) {
                     Log.d("extest", ex.getLocalizedMessage());
                     ex.printStackTrace();
-                    Utils.alert(activity, "Error getting message details", null, ex, null);
+
+                    //\ failed to connect to api.cogswell.io/63.231.127.225 (port 443) after 10000ms
+                    //Utils.alert(activity, "Error getting message details", null, ex, null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -199,6 +215,8 @@ public class EventActivity extends AppCompatActivity  {
 
             try {
                 // This will throw an exception if the json is invalid.
+                String eventName = EventActivity.this.editTextEventName.getText().toString();
+                EventActivity.this.saveFields();
                 JSONObject attributes = new JSONObject(attributesJSONAsString);
 
                 GambitRequestEvent.Builder builder = new GambitRequestEvent.Builder(accessKey, clientSalt, clientSecret);
@@ -278,23 +296,9 @@ public class EventActivity extends AppCompatActivity  {
 
 
     public void saveFields() {
-
-        eventName = editTextEventName.getText().toString();
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        sharedPreferences.edit().putString("accessKey", accessKey).apply();
-        sharedPreferences.edit().putString("clientSalt", clientSalt).apply();
-        sharedPreferences.edit().putString("clientSecret", clientSecret).apply();
-        sharedPreferences.edit().putString("attributes", attributesJSONAsString).apply();
-        sharedPreferences.edit().putString("eventName", eventName).apply();
-        sharedPreferences.edit().putString("namespaceName", namespaceName).apply();
-        sharedPreferences.edit().putInt("campaign_id", campaign_id).apply();
+        sharedPreferences.edit().putString("eventName", editTextEventName.getText().toString()).apply();
     }
-    public void fillData() {
-        eventName = editTextEventName.getText().toString();
-        saveFields();
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -307,9 +311,26 @@ public class EventActivity extends AppCompatActivity  {
         //if (isSubscribed()) {
         //    unregisterSavedSubscription(null);
         //}
+        sounds = new MediaPlayer[]{
+                MediaPlayer.create(this, R.raw.homer_beginning),
+                MediaPlayer.create(this, R.raw.homer_oopsy),
+                MediaPlayer.create(this, R.raw.homer_outta_here),
+                MediaPlayer.create(this, R.raw.homer_woohoo),
+        };
 
+        ImageView cogswellLogo = (ImageView) findViewById(R.id.cogswellLogo);
         buttonRegisterPush = (Button) findViewById(R.id.buttonRegisterPush);
         buttonUnregisterPush = (Button) findViewById(R.id.buttonUnregisterPush);
+        buttonSaveEventName = (Button) findViewById(R.id.buttonSaveEventName);
+
+        cogswellLogo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://cogswell.io"));
+                startActivity(browserIntent);
+                return true;
+            }
+        });
 
         buttonUnregisterPush.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,7 +341,7 @@ public class EventActivity extends AppCompatActivity  {
                         if (isSubscribed()) {
                             unregisterSavedSubscription(null);
                         } else {
-                            Utils.alert(EventActivity.this,"You are already unsubscribed","",null);
+                            Utils.alert(EventActivity.this, "You are already unsubscribed", "", null);
                         }
                     }
                 }, 500);
@@ -344,6 +365,16 @@ public class EventActivity extends AppCompatActivity  {
             }
         });
 
+        buttonSaveEventName.setOnClickListener(
+                new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       EventActivity.this.saveFields();
+
+                }
+            }
+        );
+
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -361,7 +392,6 @@ public class EventActivity extends AppCompatActivity  {
                 }
             }
         };
-
         android_id = Settings.Secure.getString(this.getContentResolver(),Settings.Secure.ANDROID_ID);
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -374,10 +404,12 @@ public class EventActivity extends AppCompatActivity  {
         RelativeLayout toolbar_start = (RelativeLayout) findViewById(R.id.toolbar_start);
         //new CleintSecretCall().execute("");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-
-                    editTextEventName.setText("John Doe");
+        String eventName = sharedPreferences.getString("eventName", null);
+        if (eventName==null) {
+            eventName = "John Doe";
+        }
+        editTextEventName.setText(eventName);
         //debug_directive = "echo-as-message";
-        eventName = "John Doe";
         accessKey = "a66ec003338b6ef20d2bab20d79e11ae";
         clientSalt = "308e2c9758e098521037e0d286cb153a08ac881f475464255bde8df9000ee9a2";
         clientSecret = "c47e882b43d6e7982ae43224fe6be90d65f2e94e2f9efaa1b384cd81a1d4c262";
@@ -456,6 +488,8 @@ public class EventActivity extends AppCompatActivity  {
                             timestampDebounce = timestamp + timestampDebounceTimeMs;
                             //timestampDebounce = timestamp + timestampDebounceTimeNs;
                             int magRelativeInt = (int) magRelative;
+                            TextView deltaAccelerationFromLastEvent = (TextView) EventActivity.this.findViewById(R.id.deltaAccelerationFromLastEvent);
+                            deltaAccelerationFromLastEvent.setText("Drop the Mic!   Last Impact Rating: "+magRelativeInt);
                             attributesJSONAsString = "{\"name\":\"" + EventActivity.this.android_id + "\",\"delta_a\":" + magRelativeInt + "}";
                             Log.d("Accelerometer", "Time:" + timestamp + " Hit:" + magRelative + " Event: " + attributesJSONAsString);
                             new event().execute("");
@@ -495,7 +529,7 @@ SENSOR_DELAY_NORMAL 200,000 microseconds(200 milliseconds)
 
     @Override
     protected void onPause() {
-        fillData();
+        saveFields();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         super.onPause();
     }

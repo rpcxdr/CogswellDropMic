@@ -125,11 +125,12 @@ public class RegistrationIntentService extends IntentService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 intent, PendingIntent.FLAG_ONE_SHOT);
 
+        // These mesages appear if you are outside the app.
         Uri defaultSoundUri = RingtoneManager
                 .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
                 this).setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("Cogs App").setContentText(msg)
+                .setContentTitle("Someone Dropped The Mic!").setContentText("Cogswell.io")
                 .setAutoCancel(true).setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 

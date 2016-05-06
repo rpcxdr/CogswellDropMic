@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,31 +9,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="gambit.gambit.MainActivity"
-    tools:showIn="@layout/activity_event">
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_event"
+    android:background="#cccccc"
+    >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="3"
-        android:orientation="vertical">
-    <RelativeLayout
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2.4"
-        android:layout_alignParentTop="true">
+        android:id="@+id/cogswellLogo"
+        android:src="@drawable/cogswell_logo"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Drop the Mic!"
+        android:id="@+id/deltaAccelerationFromLastEvent"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
-            android:src="@drawable/microphone"
+            android:src="@drawable/homer_simpson_workingmicrophone_c"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:weightSum="3"
+        android:orientation="horizontal">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/inputEditTextEventName"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/imageView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/editTextEventName"
@@ -41,27 +60,32 @@
                 android:layout_height="40dp"
                 android:hint="Speaker Name"/>
         </android.support.design.widget.TextInputLayout>
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:id="@+id/buttonSaveEventName"
+            android:gravity="right"/>
+    </LinearLayout>
 
-    </RelativeLayout>
-
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2">
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="Subscribe"
-                android:id="@+id/buttonRegisterPush"
-                android:layout_alignParentLeft="true"/>
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="Unsubscribe"
-                android:id="@+id/buttonUnregisterPush"
-                android:layout_alignParentRight="true"/>
+            android:weightSum="3"
+            android:orientation="horizontal">
 
-        </RelativeLayout>
-    </LinearLayout>
-</RelativeLayout>
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Subscribe"
+                    android:id="@+id/buttonRegisterPush"
+                    android:layout_alignParentLeft="true"/>
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Unsubscribe"
+                    android:id="@+id/buttonUnregisterPush"
+                    android:layout_alignParentRight="true"/>
+        </LinearLayout>
+
+</LinearLayout>
