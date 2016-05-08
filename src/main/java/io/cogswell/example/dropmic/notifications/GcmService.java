@@ -1,4 +1,4 @@
-package io.cogswell.example.notifications;
+package io.cogswell.dropmic.notifications;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,12 +12,8 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
-import io.cogswell.example.EventActivity;
-import io.cogswell.example.PushActivity;
-import io.cogswell.example.R;
+import io.cogswell.example.dropmic.EventActivity;
+import io.cogswell.dropmic.R;
 
 public class GcmService extends GcmListenerService {
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.cogswell.example">
+    package="io.cogswell.dropmic">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -18,8 +18,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartActivity" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".EventActivity"
+        <activity android:name="io.cogswell.example.dropmic.StartActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="io.cogswell.example.dropmic.EventActivity"
             android:screenOrientation="portrait"
 
             android:theme="@style/AppTheme.NoActionBar" >
@@ -35,10 +35,10 @@
                 <data android:scheme="http" android:host="gambitdemo" android:path="/" android:pathPattern=".*"/>
             </intent-filter>
         </activity>
-        <activity android:name=".PushActivity" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AboutActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="io.cogswell.example.dropmic.PushActivity" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="io.cogswell.example.dropmic.AboutActivity" android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SplashActivity"
+            android:name="io.cogswell.example.dropmic.SplashActivity"
             android:label="@string/app_name"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar"
@@ -56,7 +56,7 @@
         </receiver>
 
         <service
-            android:name="io.cogswell.example.notifications.GcmService"
+            android:name="io.cogswell.dropmic.notifications.GcmService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -64,7 +64,7 @@
         </service>
 
         <service
-            android:name="io.cogswell.example.notifications.InstanceIDService"
+            android:name="io.cogswell.dropmic.notifications.InstanceIDService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
@@ -72,7 +72,7 @@
         </service>
 
         <service
-            android:name="io.cogswell.example.notifications.RegistrationIntentService"
+            android:name="io.cogswell.dropmic.notifications.RegistrationIntentService"
             android:exported="false" >
         </service>
 

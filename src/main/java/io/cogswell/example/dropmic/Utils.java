@@ -1,4 +1,4 @@
-package io.cogswell.example;
+package io.cogswell.example.dropmic;
 
 import android.app.Activity;
 import android.app.AlertDialog;

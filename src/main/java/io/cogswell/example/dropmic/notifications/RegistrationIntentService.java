@@ -1,4 +1,4 @@
-package io.cogswell.example.notifications;
+package io.cogswell.dropmic.notifications;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -20,8 +20,8 @@ import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
 
-import io.cogswell.example.EventActivity;
-import io.cogswell.example.R;
+import io.cogswell.example.dropmic.EventActivity;
+import io.cogswell.dropmic.R;
 
 
 public class RegistrationIntentService extends IntentService {

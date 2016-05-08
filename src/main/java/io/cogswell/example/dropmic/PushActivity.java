@@ -1,10 +1,8 @@
-package io.cogswell.example;
+package io.cogswell.example.dropmic;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -24,8 +22,9 @@ import android.widget.RelativeLayout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-import io.cogswell.example.notifications.QuickstartPreferences;
-import io.cogswell.example.notifications.RegistrationIntentService;
+import io.cogswell.dropmic.R;
+import io.cogswell.dropmic.notifications.QuickstartPreferences;
+import io.cogswell.dropmic.notifications.RegistrationIntentService;
 import io.cogswell.sdk.push.GambitRequestPush;
 import io.cogswell.sdk.push.GambitResponsePush;
 
@@ -40,7 +39,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import io.cogswell.example.table.GambitAttribute;
+import io.cogswell.dropmic.table.GambitAttribute;
 
 public class PushActivity extends AppCompatActivity  {
     private String accessKey;

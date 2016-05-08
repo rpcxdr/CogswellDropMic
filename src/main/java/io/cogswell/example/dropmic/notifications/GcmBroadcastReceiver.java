@@ -1,4 +1,4 @@
-package io.cogswell.example.notifications;
+package io.cogswell.dropmic.notifications;
 
 import android.app.Activity;
 import android.content.ComponentName;

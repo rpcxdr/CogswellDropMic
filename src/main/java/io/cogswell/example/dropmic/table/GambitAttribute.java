@@ -1,6 +1,4 @@
-package io.cogswell.example.table;
-
-import android.util.Log;
+package io.cogswell.dropmic.table;
 
 import org.json.JSONException;
 import org.json.JSONObject;

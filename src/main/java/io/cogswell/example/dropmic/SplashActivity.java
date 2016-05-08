@@ -1,4 +1,4 @@
-package io.cogswell.example;
+package io.cogswell.example.dropmic;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,12 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import io.cogswell.dropmic.R;
 
 public class SplashActivity extends Activity {
 

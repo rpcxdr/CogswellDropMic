@@ -1,10 +1,8 @@
-package io.cogswell.example;
+package io.cogswell.example.dropmic;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -21,24 +19,22 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-import io.cogswell.example.notifications.QuickstartPreferences;
-import io.cogswell.example.notifications.RegistrationIntentService;
+import io.cogswell.dropmic.R;
+import io.cogswell.dropmic.notifications.QuickstartPreferences;
+import io.cogswell.dropmic.notifications.RegistrationIntentService;
 import io.cogswell.sdk.GambitSDKService;
 import io.cogswell.sdk.message.GambitRequestMessage;
 import io.cogswell.sdk.message.GambitResponseMessage;
@@ -63,7 +59,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import io.cogswell.example.table.GambitAttribute;
+import io.cogswell.dropmic.table.GambitAttribute;
 
 public class EventActivity extends AppCompatActivity  {
     private String accessKey;
@@ -216,6 +212,7 @@ public class EventActivity extends AppCompatActivity  {
             try {
                 // This will throw an exception if the json is invalid.
                 String eventName = EventActivity.this.editTextEventName.getText().toString();
+                if (eventName==null || eventName.length()==0) eventName="Someone";
                 EventActivity.this.saveFields();
                 JSONObject attributes = new JSONObject(attributesJSONAsString);
 
@@ -247,6 +244,7 @@ public class EventActivity extends AppCompatActivity  {
                 } catch (Exception e) {
                     e.printStackTrace();
                     Utils.alert(activity, "Error sending event", null, e, null);
+                    return null;
                 }
 
                 GambitResponseEvent response;
