@@ -11,6 +11,8 @@
     tools:context="gambit.gambit.MainActivity"
     android:orientation="vertical"
     tools:showIn="@layout/activity_event"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     >
 
     <ImageView
@@ -25,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:text="Drop the Mic!"
+        android:text="Drop the Mic!  Tap to send impact event."
         android:id="@+id/deltaAccelerationFromLastEvent"
         android:textSize="18dp"
         />
@@ -33,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="600px"
         android:id="@+id/imageView"
-        android:src="@drawable/fab_micdrop"
+        android:src="@drawable/micdrop_772p"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -58,6 +60,8 @@
                android:text="John Doe"
                android:lines="1"
                android:maxLines="1"
+               android:nextFocusUp="@id/editTextEventName"
+               android:nextFocusLeft="@id/editTextEventName"
                android:singleLine="true"
                 android:hint="Speaker Name"/>
         </android.support.design.widget.TextInputLayout>

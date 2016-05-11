@@ -157,9 +157,11 @@ public class EventActivity extends AppCompatActivity  {
                                 Utils.alert(activity, eventNameIncoming + " dropped the mic!", "", new Runnable() {
                                     @Override
                                     public void run() {
-                                        int soundIndex = new Random().nextInt(sounds.length);
-                                        if (!sounds[soundIndex].isPlaying()) {
-                                            sounds[soundIndex].start();
+                                        if (sounds.length>0) {
+                                            int soundIndex = new Random().nextInt(sounds.length);
+                                            if (!sounds[soundIndex].isPlaying()) {
+                                                sounds[soundIndex].start();
+                                            }
                                         }
                                     }
                                 });
@@ -259,7 +261,7 @@ public class EventActivity extends AppCompatActivity  {
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    Utils.alert(activity, "Error getting event response", null, ex, null);
+                    Utils.alert(activity, "Error getting event response", "You may need to restart the app.", ex, null);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -310,10 +312,10 @@ public class EventActivity extends AppCompatActivity  {
         //    unregisterSavedSubscription(null);
         //}
         sounds = new MediaPlayer[]{
-                MediaPlayer.create(this, R.raw.homer_beginning),
-                MediaPlayer.create(this, R.raw.homer_oopsy),
-                MediaPlayer.create(this, R.raw.homer_outta_here),
-                MediaPlayer.create(this, R.raw.homer_woohoo),
+                MediaPlayer.create(this, R.raw.hs_beginning),
+                MediaPlayer.create(this, R.raw.hs_oopsy),
+                MediaPlayer.create(this, R.raw.hs_outta_here),
+                MediaPlayer.create(this, R.raw.hs_woohoo),
         };
 
         ImageView cogswellLogo = (ImageView) findViewById(R.id.cogswellLogo);
@@ -482,7 +484,7 @@ public class EventActivity extends AppCompatActivity  {
 
                     synchronized (EventActivity.class) {
                         if (magRelative > magThreshold && timestamp > timestampDebounce) {
-                            long timestampDebounceTimeMs = 600;
+                            long timestampDebounceTimeMs = 2000;
                             timestampDebounce = timestamp + timestampDebounceTimeMs;
                             //timestampDebounce = timestamp + timestampDebounceTimeNs;
                             int magRelativeInt = (int) magRelative;

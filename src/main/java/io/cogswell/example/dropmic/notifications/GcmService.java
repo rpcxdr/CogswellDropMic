@@ -1,5 +1,6 @@
 package io.cogswell.dropmic.notifications;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -74,23 +75,25 @@ Log.d("GcmService", "onMessageReceived");
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 intent, PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri = RingtoneManager
-                .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        //Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 /*
         int soundIndex = new Random().nextInt(3);
         if (soundIndex==1) {
-            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.homer_beginning);
+            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.hs_beginning);
         } else if (soundIndex==2) {
-            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.homer_oopsy);
+            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.hs_oopsy);
         } else if (soundIndex==0) {
-            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.homer_outta_here);
+            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.hs_outta_here);
         } else  {
-            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.homer_woohoo);
+            defaultSoundUri = Uri.parse("android.resource://io.cogswell.example/" + R.raw.hs_woohoo);
         }*/
+        Uri defaultSoundUri = Uri.parse("android.resource://"+getPackageName()+"/" + R.raw.obn_mic_drop);
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
                 this).setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle("Someone Dropped The Mic").setContentText("Cogswell.io")
-                .setAutoCancel(true).setSound(defaultSoundUri)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri).setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

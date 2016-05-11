@@ -1,6 +1,7 @@
 package io.cogswell.dropmic.notifications;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -125,13 +126,14 @@ public class RegistrationIntentService extends IntentService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 intent, PendingIntent.FLAG_ONE_SHOT);
 
+        Uri defaultSoundUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.obn_mic_drop);
+
         // These mesages appear if you are outside the app.
-        Uri defaultSoundUri = RingtoneManager
-                .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        //Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
                 this).setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle("Someone Dropped The Mic!").setContentText("Cogswell.io")
-                .setAutoCancel(true).setSound(defaultSoundUri)
+                .setAutoCancel(true).setSound(defaultSoundUri).setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

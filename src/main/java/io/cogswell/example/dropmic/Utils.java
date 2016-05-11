@@ -3,6 +3,7 @@ package io.cogswell.example.dropmic;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -38,21 +39,25 @@ public class Utils {
         final Runnable handleAlertCompleteFinal = handleAlertComplete;
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                new AlertDialog.Builder(activity)
-                        .setTitle(title)
-                        .setMessage(message)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    //.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // We need to implement this method for the cancel button to appear.
-                                        if (handleAlertCompleteFinal != null) {
-                                            handleAlertCompleteFinal.run();
+                try {
+                    new AlertDialog.Builder(activity)
+                            .setTitle(title)
+                            .setMessage(message)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        //.setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // We need to implement this method for the cancel button to appear.
+                                            if (handleAlertCompleteFinal != null) {
+                                                handleAlertCompleteFinal.run();
+                                            }
                                         }
                                     }
-                                }
-                        )
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                            )
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                } catch (Exception e) {
+                    Log.e("Utils", "Failed to dispaly alert:\nTitle:"+title+"\nMessage: "+message+"\nAlertDialog Error: "+formatStackTrace(e));
+                }
             }
         });
     }

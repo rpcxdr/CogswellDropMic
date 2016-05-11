@@ -36,11 +36,12 @@ android {
   }
 
   defaultConfig {
+    // TODO: Change this to io.cogswell.example.dropmic
     applicationId "io.cogswell.example"
     minSdkVersion 15
     targetSdkVersion 22
-    versionCode 12
-    versionName "12.0"
+    versionCode 18
+    versionName "18.0"
     multiDexEnabled true
   }
 }
