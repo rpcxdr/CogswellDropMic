@@ -23,8 +23,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import io.cogswell.dropmic.R;
-import io.cogswell.dropmic.notifications.QuickstartPreferences;
-import io.cogswell.dropmic.notifications.RegistrationIntentService;
+import io.cogswell.example.dropmic.notifications.QuickstartPreferences;
+import io.cogswell.example.dropmic.notifications.RegistrationIntentService;
 import io.cogswell.sdk.push.GambitRequestPush;
 import io.cogswell.sdk.push.GambitResponsePush;
 
@@ -33,20 +33,16 @@ import org.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import io.cogswell.dropmic.table.GambitAttribute;
-
 public class PushActivity extends AppCompatActivity  {
     private String accessKey;
     private String namespaceName;
-    private String eventName;
     private String platform;
-    private String enviornment = "dev";
+    private String environment = "dev";
     private String attributesJSONAsString;
     private String platform_app_id;
     private boolean wasPushed = false;
@@ -55,24 +51,13 @@ public class PushActivity extends AppCompatActivity  {
     private String clientSalt = null;
     private String clientSecret = null;
 
-    private String randomUUID = null;
-    private String randomUUIDBody = null;
-    private ArrayList<GambitAttribute> namespaceAttributs = null;
-    private String namespaceBody = null;
-    private String eventBody = null;
-
-    private boolean pushServiceStarted = false;
-
     private Button buttonRegisterPush;
     private Button buttonUnregisterPush;
-
-
 
     private EditText editTextAccessKey;
     private EditText editTextClientSalt;
     private EditText editTextClientSecret;
     private EditText editTextApplicationID;
-    private EditText editTextApplication;
     private EditText editTextUUID;
     private EditText editTextAttributes;
     private EditText editTextNamespace;
@@ -172,7 +157,7 @@ public class PushActivity extends AppCompatActivity  {
                 ).setNamespace(namespaceName)
                         .setAttributes(attributes)
                         .setUDID(UDID)
-                        .setEnviornment(enviornment)
+                        .setEnviornment(environment)
                         .setPlatform(platform)
                         .setPlatformAppID(platform_app_id)
                         .setMethodName(GambitRequestPush.register);
@@ -252,7 +237,7 @@ public class PushActivity extends AppCompatActivity  {
             ).setNamespace(namespaceName)
                     .setAttributes(attributes)
                     .setUDID(UDID)
-                    .setEnviornment(enviornment)
+                    .setEnviornment(environment)
                     .setPlatform(platform)
                     .setPlatformAppID(platform_app_id)
                     .setMethodName(GambitRequestPush.unregister);

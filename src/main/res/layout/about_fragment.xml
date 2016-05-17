@@ -1,0 +1,18 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#ffffff"
+    android:background="#ffffff">
+
+    <TextView
+        android:scrollbars = "vertical"
+        android:fillViewport = "true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Brought to you by Cogswell.io"
+        android:id="@+id/aboutTextView"
+        android:layout_gravity="center"
+        />
+
+</FrameLayout>

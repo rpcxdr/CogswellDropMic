@@ -9,4 +9,25 @@
         <item>Echo as message</item>
         <item>Mirror as message</item>
     </string-array>
+    <string name="about_popup_text">  <![CDATA[
+
+<b>Notify your friends when you Drop the Mic, and experience the power of the Cogswell.io platform:</b><br/>
+<br/>
+<b>Be social!</b><br/>
+&#8226; When you install this app, you will step onto a <b>global stage</b>.  Drop the Mic, and everyone who has subscribed will be notified.<br/>
+&#8226; <b>Find a friend</b> or two to download this app: You\'ll learn when they Drop the Mic, and they will be notified when you Drop the Mic.<br/>
+&#8226; You can just tap your phone instead of dropping it.<br/>
+&#8226; You can enter any name you want.<br/>
+&#8226; You can subscribe and unsubscribe at any time.<br/>
+&#8226; You will send Mic Drop notifications as long as the app is running, even if your screen is off.<br/>
+<br/>
+<b>Be a developer!</b><br/>
+&#8226; This app demonstrates the Cogs massively-parallel high-throughput distributed message broker system using GSM and a rules engine to set the impact threshold.<br/>
+&#8226; The impact sensor runs in the background, and only sends events if a minimum impact is sensed.<br/>
+&#8226; Cogswell also includes a rules engine and NoSQL DB.<br/>
+&#8226; <b>All of this power can be in your hands:</b>  We have SDKs in C#, Java, javascript, Android and iOS.<br/>
+&#8226; Write your own app: <a href="https://cogswell.io/#!/api-docs">https://cogswell.io/#!/api-docs</a><br/>
+<br/>
+    ]]>
+    </string>
 </resources>

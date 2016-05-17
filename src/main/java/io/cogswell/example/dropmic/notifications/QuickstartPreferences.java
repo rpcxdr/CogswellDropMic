@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.cogswell.dropmic.notifications;
+package io.cogswell.example.dropmic.notifications;
 
 public class QuickstartPreferences {
 

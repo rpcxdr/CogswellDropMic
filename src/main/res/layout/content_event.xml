@@ -14,15 +14,25 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     >
-
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cogswellLogo"
-        android:src="@drawable/cogswell_logo"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cogswellLogo"
+            android:src="@drawable/cogswell_logo"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+        <Button
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:text="\?"
+            android:id="@+id/aboutButton"
+            android:layout_weight="0.10"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

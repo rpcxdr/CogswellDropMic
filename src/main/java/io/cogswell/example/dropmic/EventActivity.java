@@ -19,13 +19,18 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,8 +38,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import io.cogswell.dropmic.R;
-import io.cogswell.dropmic.notifications.QuickstartPreferences;
-import io.cogswell.dropmic.notifications.RegistrationIntentService;
+import io.cogswell.example.dropmic.notifications.QuickstartPreferences;
+import io.cogswell.example.dropmic.notifications.RegistrationIntentService;
 import io.cogswell.sdk.GambitSDKService;
 import io.cogswell.sdk.message.GambitRequestMessage;
 import io.cogswell.sdk.message.GambitResponseMessage;
@@ -50,7 +55,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 import java.util.TimeZone;
@@ -59,14 +63,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import io.cogswell.dropmic.table.GambitAttribute;
-
 public class EventActivity extends AppCompatActivity  {
     private String accessKey;
     private String namespaceName;
     private String attributesJSONAsString;
     private String platform;
-    private String enviornment;
+    private String environment;
     private String platform_app_id;
     private int campaign_id = 1;
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -76,13 +78,7 @@ public class EventActivity extends AppCompatActivity  {
     private String clientSalt = null;
     private String clientSecret = null;
 
-    private String randomUUID = null;
-    private String randomUUIDBody = null;
-    private ArrayList<GambitAttribute> namespaceAttributs = null;
-    private String namespaceBody = null;
-    private String eventBody = null;
     private String receivedMessage = null;
-    private boolean pushServiceStarted = false;
     MediaPlayer sounds[];
 
     private Button buttonRegisterPush;
@@ -95,7 +91,7 @@ public class EventActivity extends AppCompatActivity  {
     double magLowPass=0;
     double magAveNoise=0;
     double magAlpha = 0.01;
-    static long timestampDebounce =0;
+    static long timestampDebounce =System.currentTimeMillis()+5000;
     long timestampDebounceTimeNs = 1000000000;
     //long timestampDebounceTimeNs = 100000000;
 
@@ -253,7 +249,7 @@ public class EventActivity extends AppCompatActivity  {
                 try {
                     response = (GambitResponseEvent) future.get();
 
-                    eventBody = response.getRawBody();
+                    //eventBody = response.getRawBody();
 
                     //Log.d("eventBody", eventBody);
                     message = response.getMessage();
@@ -298,6 +294,10 @@ public class EventActivity extends AppCompatActivity  {
     public void saveFields() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPreferences.edit().putString("eventName", editTextEventName.getText().toString()).apply();
+    }
+    public void loadFields() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        editTextEventName.setText(sharedPreferences.getString("eventName", "John Doe"));
     }
 
     @Override
@@ -418,7 +418,7 @@ public class EventActivity extends AppCompatActivity  {
         Log.d("EventActivity","attributesJSONAsString:"+attributesJSONAsString);
         namespaceName = "dropmic";
         platform_app_id = "gambit.gambit";
-        enviornment = "dev";
+        environment = "dev";
         platform = "android";
 
         Intent intent = getIntent();
@@ -513,6 +513,34 @@ SENSOR_DELAY_UI 60,000 microsecond
 SENSOR_DELAY_NORMAL 200,000 microseconds(200 milliseconds)
  */
 
+        final Button aboutButton = (Button) findViewById(R.id.aboutButton);
+
+        LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View popupView = layoutInflater.inflate(R.layout.about_fragment, null);
+        final PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setContentView(popupView);
+        TextView popupTextView = (TextView) popupView.findViewById(R.id.aboutTextView);
+        popupTextView.setText(Html.fromHtml(getResources().getString(R.string.about_popup_text)));
+        popupTextView.setMovementMethod(LinkMovementMethod.getInstance());
+        // When you click the about popup, hide it.
+        popupTextView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+        // When you click the about button, display a popup.
+        aboutButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                } else {
+                    popupWindow.showAsDropDown(aboutButton, 0, 0);
+                }
+            }
+        });
 
     }
     public static boolean isInteger(String s) {
@@ -657,7 +685,7 @@ SENSOR_DELAY_NORMAL 200,000 microseconds(200 milliseconds)
                 ).setNamespace(namespaceName)
                         .setAttributes(attributes)
                         .setUDID(UDID)
-                        .setEnviornment(enviornment)
+                        .setEnviornment(environment)
                         .setPlatform(platform)
                         .setPlatformAppID(platform_app_id)
                         .setMethodName(GambitRequestPush.register);
@@ -753,6 +781,10 @@ SENSOR_DELAY_NORMAL 200,000 microseconds(200 milliseconds)
     @Override
     protected void onResume() {
         super.onResume();
+        loadFields();
+        TextView deltaAccelerationFromLastEvent = (TextView) EventActivity.this.findViewById(R.id.deltaAccelerationFromLastEvent);
+        deltaAccelerationFromLastEvent.setText("Drop the Mic!  Tap to send impact event.");
+
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
     }
@@ -761,7 +793,6 @@ SENSOR_DELAY_NORMAL 200,000 microseconds(200 milliseconds)
             // Start IntentService to register this application with GCM.
             Intent intentRegistration = new Intent(this, RegistrationIntentService.class);
             startService(intentRegistration);
-
         }
     }
 
