@@ -290,11 +290,11 @@ public class EventActivity extends AppCompatActivity  {
 
     private Activity activity;
 
-
     public void saveFields() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPreferences.edit().putString("eventName", editTextEventName.getText().toString()).apply();
     }
+
     public void loadFields() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
         editTextEventName.setText(sharedPreferences.getString("eventName", "John Doe"));
@@ -359,6 +359,8 @@ public class EventActivity extends AppCompatActivity  {
                     //        new registerPushService().execute("");
                     //    }
                     //});
+                } else if (UDID==null) {
+                    Utils.alert(EventActivity.this,"Cannot subscribe yet","Waiting for Google to send this app's unique id.",null);
                 } else {
                     new registerPushService().execute("");
                 }
@@ -366,12 +368,11 @@ public class EventActivity extends AppCompatActivity  {
         });
 
         buttonSaveEventName.setOnClickListener(
-                new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       EventActivity.this.saveFields();
-
-                }
+            new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   EventActivity.this.saveFields();
+              }
             }
         );
 
@@ -387,6 +388,13 @@ public class EventActivity extends AppCompatActivity  {
                     UDID = token;
                     Log.d("UDID", UDID);
                     Log.d("variant1", "variant1");
+
+                    // Auto subscribe
+                    if(!isSubscribed()) {
+                        new registerPushService().execute("");
+                    }
+
+
                 } else {
                     Log.d("variant2", "variant2");
                 }
@@ -414,7 +422,7 @@ public class EventActivity extends AppCompatActivity  {
         clientSalt = "308e2c9758e098521037e0d286cb153a08ac881f475464255bde8df9000ee9a2";
         clientSecret = "c47e882b43d6e7982ae43224fe6be90d65f2e94e2f9efaa1b384cd81a1d4c262";
 
-        attributesJSONAsString = "{\"name\":\""+android_id+"\",\"delta_a\":123}";
+        attributesJSONAsString = "{\"name\":\""+android_id+"\",\"delta_a\":1}";
         Log.d("EventActivity","attributesJSONAsString:"+attributesJSONAsString);
         namespaceName = "dropmic";
         platform_app_id = "gambit.gambit";
@@ -437,28 +445,6 @@ public class EventActivity extends AppCompatActivity  {
                 R.array.debug_strings, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-/*
-        toolbar_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fillData();
-
-                Intent mainIntent = new Intent(EventActivity.this, StartActivity.class);
-                EventActivity.this.startActivity(mainIntent);
-                EventActivity.this.finish();
-            }
-        });
-        toolbar_execute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            saveFields();
-
-            new event().execute("");
-            }
-        });
-*/
 
         mSensorManager = (SensorManager) getSystemService(this.SENSOR_SERVICE);
         mAccelerometer  = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -512,7 +498,6 @@ SENSOR_DELAY_GAME 20,000 microsecond
 SENSOR_DELAY_UI 60,000 microsecond
 SENSOR_DELAY_NORMAL 200,000 microseconds(200 milliseconds)
  */
-
         final Button aboutButton = (Button) findViewById(R.id.aboutButton);
 
         LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
