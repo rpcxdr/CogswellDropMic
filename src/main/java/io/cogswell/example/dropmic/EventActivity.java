@@ -352,6 +352,9 @@ public class EventActivity extends AppCompatActivity  {
             public void onClick(View v) {
 
                 saveFields();
+
+
+
                 if (isSubscribed()) {
                     Utils.alert(EventActivity.this,"You are already subscribed","",null);
                     //unregisterSavedSubscription(new Runnable() {

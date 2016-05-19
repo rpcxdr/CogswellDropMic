@@ -40,8 +40,8 @@ android {
     applicationId "io.cogswell.example"
     minSdkVersion 15
     targetSdkVersion 22
-    versionCode 20
-    versionName "20.0"
+    versionCode 21
+    versionName "21.0"
     multiDexEnabled true
   }
 }
